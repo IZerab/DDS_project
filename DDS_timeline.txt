@@ -1,0 +1,106 @@
+*This is a work in progeress*
+
+Phase 1: 
+-1st Groupmeeting
+-looking at the given data set
+-brainstorming possible questions and goals 
+-thinking of DS task 
+
+Phase 2 (23.11): 
+- meet Steffen
+- 2nd Groupmeeting
+- define tasks and assign responsibilities:
+	-EDA:
+	-Infrastructure: Github (jupyter&.py), meetings, discord, whatsapp
+	-sentiment analysis
+
+- define project goals/ evaluation measures:
+	data exploration& visualisation
+	Cluser analysis
+
+Phase 3 (12.12): 
+- Data Preparation
+- 3rd Groupmeeting
+- Data Modelling
+- 4th Groupmeeting
+
+Phase 4 End of december:
+-creating Poster & upload
+-5th Groupmeeting
+-Evaluating project
+-6 Groupmeeting
+
+Phase 5 Beginning January: 
+- incorporate feedback from peers
+-7th Groupmeeting
+- improve Project/Poster
+-8 Groupmeeting
+
+Final: Poster presentation 18/19.01.
+
+
+
+
+Tasks: 
+
+-discuss workflow
+-Question suggestion: 
+How to organize the best campagne (on twitter)? 
+State with the highest spread of Trump/Biden support?
+Geolocalisze all tweets, general sentiment analyses average through the last two months -> assign label (in republican/non repuclican state) 
+
+"Is there a difference in twitter sentiment behaviour in swing states compared to republican/democrate states?"(What are the features that differentiate them)
+
+
+Bias& Problem: 
+Tweets that are in the USA, but they have a 'NaN' label
+Get rid of country & build our own variable 
+
+
+Clean data: 
+
+tweet_id
+user_id
+user_join_date
+city
+state 
+country
+statecode
+collected_at
+
+
+before joining sets: 
+compute average sentiment for each state
+
+new features: 
+
+trump average sentiment (day/given state)
+biden average sentiment (day/given state)
+
+does it mention Trump/Biden?
+
+English(Y/N)
+Spanish(Y/N)
+Other language(Y/N)
+
+
+Cluster: 
+
+group all tweets together in this dataframe on a state bases:
+name,weighted sum (function we have to discover), abundance of engish speakers, abundance of spanish speakers, abundance of other, last election dominated by democrats/republicans, average sentiment on given date(last debate/the election day/on the proclamation day),urban/total ratio by inhabitants,
+
+
+3 groups: 
+democrats/swing/republican
+
+
+Visualise with geopandas: colour each state 
+
+
+To dos until next meeting (28.11.): 
+
+sentiment analysis (Manos&Sarah)
+geopandas "stuff" (Lorenzo)
+draft a first idea of CRISP steps in a formal way(Kseniia)
+decide the weighted formula (Manos&Lorenzo)
+look up distribution languages spoken in the USA/data set on USA cities/population densitiy (Sarah)
