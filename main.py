@@ -15,6 +15,10 @@ from Preprocessing_functions import localize_tweets
 data_donald = pd.read_csv("hashtag_donaldtrump.csv", lineterminator='\n')
 data_joe = pd.read_csv("hashtag_joebiden.csv", lineterminator='\n')
 
+
+# preprocessing the data
+
+
 # geolocalize Trump
 print("Donald Trump")
 data_donald = drop_non_geolocalised(data_donald, "lat", "long")
@@ -29,4 +33,3 @@ geo_donald = localize_tweets(data_donald, "World Trump data distribution")
 # plotting Biden
 geo_biden = localize_tweets(data_donald, "World Joe data distribution")
 
-print("Hello,I am Kseniia.")
