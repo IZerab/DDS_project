@@ -140,7 +140,7 @@ def plot_sentiment_state(dataset1,dataset2,key):
                 plt.subplot2grid((13,4), (i,j))
                 plt.title(biden_origin_state.index[count])
                 plt.xlabel('Polarity')
-                sns.kdeplot(data=dataset1[dataset1==biden_origin_state.index[count]],x='TextBlob_Polarity',label='Biden',color=biden_color)
+                sns.kdeplot(data=dataset1[dataset1.state==biden_origin_state.index[count]],x='TextBlob_Polarity',label='Biden',color=biden_color)
                 sns.kdeplot(data=dataset2[dataset2.state==biden_origin_state.index[count]],x='TextBlob_Polarity',label='Trump',color=trump_color)
                 plt.legend(frameon=False,fontsize=15)
                 count+=1
