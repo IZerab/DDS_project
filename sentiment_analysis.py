@@ -130,6 +130,7 @@ def plot_sentiment_state(dataset1,dataset2,key):
         plt.ylabel('Subjectivity',fontsize=35)
 
         plt.savefig('avg_sub_state_en.jpg',dpi=300,bbox_inches='tight')
+        plt.clf()
     elif key=='Polarity':
         ### Polarity Distribution per state ####
         fig = mpl.pyplot.gcf()
@@ -158,6 +159,7 @@ def plot_sentiment_state(dataset1,dataset2,key):
         plt.legend(frameon=False,fontsize=30)
         plt.xticks(rotation=90)
         plt.savefig('avg_pol_state.jpg',dpi=300,bbox_inches='tight')
+        plt.clf()
 
     elif key=='Correlation':
         biden_avg_pol,trump_avg_pol=calc_stat_sentiment(dataset1,dataset2,'Polarity')
@@ -168,6 +170,7 @@ def plot_sentiment_state(dataset1,dataset2,key):
         plt.xlabel('Subjectivity')
         plt.legend(frameon=False,loc=(0.6,0.0))
         plt.savefig('pol_vs_subj_en.jpg',dpi=300,bbox_inches='tight')
+        plt.clf()
     else:
         print('Please read function use')
 
