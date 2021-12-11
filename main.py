@@ -8,8 +8,8 @@ import sklearn as sk
 import matplotlib.pyplot as plt
 
 # custom libraries
-from Preprocessing_functions import drop_non_geolocalised
-from Preprocessing_functions import localize_tweets
+from Geographycal_functions import drop_non_geolocalised
+from Geographycal_functions import localize_tweets
 
 # import the raw data
 data_donald = pd.read_csv("hashtag_donaldtrump.csv", lineterminator='\n')
