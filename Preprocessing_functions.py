@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
-
 def safe_drop_attr(df, label, list_drop):
     """
     This function is just a variation of the usual drop, we are using it just for clarity
@@ -42,6 +40,3 @@ def safe_eliminate_NaN(df):
     print("The number of instances after dropped are: ", inst_before - inst_after)
 
     return df
-
-
-
