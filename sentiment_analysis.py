@@ -1,6 +1,7 @@
-### Set of functions for sentiment analysis, using TextBlob. This is only for English language.
-### We'll need to find a model trained  for Spanish in order to do proper sentiment analysis. 
-
+'''
+Set of functions for sentiment analysis, using TextBlob. This is only for English language.
+We'll need to find a model trained  for Spanish in order to do proper sentiment analysis. 
+'''
 import numpy as np # Library for multi-dimensional arrays and math operations on them 
 import pandas as pd # Library for data manipulation and analysis
 import matplotlib.pyplot as plt #Plotting library
@@ -13,44 +14,55 @@ biden_color='#2986cc'
 trump_color='#cc0000'
 
 def sentiment_analysis(dataset):
-    ### Function used to do sentiment analysis. Calculates Polarity value [-1,1] and subjectivity value [0,1].
-    ### For polarity, negative values exhibit negative sentiment and vice versa. Zero value suggests neutrality.
-    ### For subjectivity, 0 is completely objective statement and 1 is completely subjective statement. 
-    ### Input: The whole dataset to be subjected to sentiment analysis
-    ### Output: Dataset with added features such as Polarity, Subjectivity and Overall Sentiment (positive/negative)
+    ''' 
+     Function used to do sentiment analysis. Calculates Polarity value [-1,1] and subjectivity value [0,1].
+     For polarity, negative values exhibit negative sentiment and vice versa. Zero value suggests neutrality.
+     For subjectivity, 0 is completely objective statement and 1 is completely subjective statement. 
+     Input: The whole dataset to be subjected to sentiment analysis
+     Output: Dataset with added features such as Polarity, Subjectivity and Overall Sentiment (positive/negative)
+     '''
     def getSubjectivity(text):
-        ## Function to get subjectivity of a string
-        ## Input: Tweet to be analyzed
-        ## Output: Subjectivity value
+        '''
+        Function to get subjectivity of a string
+        Input: Tweet to be analyzed
+        Output: Subjectivity value
+        '''
         s=TextBlob(text)
         return s.sentiment.subjectivity 
     def getPolarity(text):
-        ## Function to get polarity of a string
-        ## Input: Tweet to be analyzed
-        ## Output: Polarity value
+        '''
+        Function to get polarity of a string
+        Input: Tweet to be analyzed
+        Output: Polarity value
+        '''
         p=TextBlob(text)
         return p.sentiment.polarity
-    ## Run sentiment analysis on tweets and add polarity and subjectivity features
+    #Run sentiment analysis on tweets and add polarity and subjectivity features
     dataset['TextBlob_Subjectivity'] =dataset['tweet'].apply(getSubjectivity)
     dataset['TextBlob_Polarity'] = dataset['tweet'].apply(getPolarity)
     def getAnalysis(score):
-        ### Function tags tweets as negative, positive or neutral based on polarity value
-        ### Input: Polarity Score
-        ### Ouput: Negative, Neutral or Positive Tag.
+        '''
+        Function tags tweets as negative, positive or neutral based on polarity value
+        Input: Polarity Score
+        Ouput: Negative, Neutral or Positive Tag.
+        '''
+       
         if score < 0:
             return 'Negative'
         elif score == 0:
             return 'Neutral'
         else:
             return 'Positive'
-    ### Add feature to dataset 
+    # Add feature to dataset 
     dataset ['TextBlob_Analysis'] = dataset['TextBlob_Polarity'].apply(getAnalysis)
     return dataset
 
 def calc_stat_sentiment(dataset1,dataset2,key):
-    ### Function to calculate average polarity and subjectivity per state
-    ## Input: The two datasets and a key statement for Subjectivity or Polarity
-    ## Output: Lists with the average value of each state
+    ''' 
+    Function to calculate average polarity and subjectivity per state
+    Input: The two datasets and a key statement for Subjectivity or Polarity
+    Output: Lists with the average value of each state
+    '''
     biden_origin_state=dataset1.state.value_counts()[:]
     biden_avg=[]
     trump_avg=[]
@@ -73,9 +85,11 @@ def calc_stat_sentiment(dataset1,dataset2,key):
     return biden_avg,trump_avg
 
 def plot_sentiment_overall(dataset1,dataset2,key):
-    ### Function to produce probality density function plots for subjectivity and polarity of the whole dataset
-    ### Input: Dataset to be used, dataset should contain Polarity and Subjectivity features. Key is which feature should be used.
-    ### Ouput: Plot requested by the key, stored in the folder on which the program is run
+    ''' 
+    Function to produce probality density function plots for subjectivity and polarity of the whole dataset
+    Input: Dataset to be used, dataset should contain Polarity and Subjectivity features. Key is which feature should be used.
+    Ouput: Plot requested by the key, stored in the folder on which the program is run
+    '''
     if key=='Polarity':
         sns.kdeplot(data=dataset1,x='TextBlob_Polarity',label='Biden',color=biden_color)
         sns.kdeplot(data=dataset2,x='TextBlob_Polarity',label='Trump',color=trump_color)
@@ -97,8 +111,10 @@ def plot_sentiment_overall(dataset1,dataset2,key):
 
 
 def plot_sentiment_state(dataset1,dataset2,key):
-    ### Function to produce probality density function plots for subjectivity and polarity of the whole dataset
-    ### Input: Dataset to be used, dataset should contain Polarity and Subjectivity features. Key is which feature should be used.
+    ''' 
+    Function to produce probality density function plots for subjectivity and polarity of the whole dataset
+    Input: Dataset to be used, dataset should contain Polarity and Subjectivity features. Key is which feature should be used.
+    '''
     biden_origin_state=dataset1.state.value_counts()[:]
     if key=='Subjectivity':
         fig = mpl.pyplot.gcf()
