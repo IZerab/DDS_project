@@ -1,9 +1,9 @@
 # functions that are related to geography
 
-import pandas as pd
 import geopandas
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
+
 
 def drop_non_geolocalised(df, label_latitude, label_longitude):
     """
@@ -32,7 +32,7 @@ def drop_non_geolocalised(df, label_latitude, label_longitude):
     return df
 
 
-def localize_tweets(df, title):
+def localize_tweets(df, title, plot=False):
     """
     Function that creates a shapely like object to be use to gelocalize the single tweets using geopandas
     :param df: Our dataframe with coordinates (lat and long). It plots te results on the world map!
@@ -45,52 +45,43 @@ def localize_tweets(df, title):
     # importing world map
     world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
 
-    # get the ID of each state
-    #categories = np.unique(gdf["id"])
-    #colors = np.linspace(0, 1, len(categories))
-    #colordict = dict(zip(categories, colors))
+    if plot:
+        # plot the world map
+        ax = world.plot(color='white', edgecolor='black')
+        ax.set_title(title)
 
-    # adding the color to each record
-    #gdf["Color"] = gdf["id"].apply(lambda x: colordict[x])
+        # plot our points
+        gdf.plot(ax=ax, marker=',', markersize=1, cmap='BuGn')
 
-    # plot the world map
-    ax = world.plot(color='white', edgecolor='black')
-    ax.set_title(title)
-
-    # plot our points
-    gdf.plot(ax=ax, marker=',', markersize=1, cmap='BuGn')
-
-    plt.show()
+        plt.show()
 
     return gdf
 
 
-def localize_USA(gdf, title):
+def localize_USA(gdf, title, plot=False):
     """
     Function that creates a shapely like object to be use to gelocalize the single tweets using geopandas
     :param gdf: Our Geopandas dataframe with coordinates (lat and long). It plots te results in a USA map!
     :param title: title of the plot
     :return: the geopandas dataframe with the localized data!
     """
-    # creating the geopandas dataset
-    usa = geopandas.read_file("states.shp")
+    # upload the USA map
+    usa = geopandas.read_file("Maps/states.shp")
+    gdf = geopandas.sjoin(usa, gdf, how="inner", op='contains')
 
+    useless_col = ["country", "city", "state", "state_code", "lat", "long"]
+    gdf.drop(columns=useless_col, inplace=True)
 
-    # get the ID of each state
-    # categories = np.unique(gdf["id"])
-    # colors = np.linspace(0, 1, len(categories))
-    # colordict = dict(zip(categories, colors))
+    if plot:
+        # plot the world map
+        ax = world.plot(color='white', edgecolor='black')
+        ax.set_title(title)
 
-    # adding the color to each record
-    # gdf["Color"] = gdf["id"].apply(lambda x: colordict[x])
+        # plot our points
+        gdf.plot(ax=ax, marker=',', markersize=1, cmap='BuGn')
 
-    # plot the world map
-    ax = world.plot(color='white', edgecolor='black')
-    ax.set_title(title)
+        plt.show()
 
-    # plot our points
-    gdf.plot(ax=ax, marker=',', markersize=1, cmap='BuGn')
-
-    plt.show()
+    print("The number of tweets available is: {} \n".format(gdf.shape[0]))
 
     return gdf

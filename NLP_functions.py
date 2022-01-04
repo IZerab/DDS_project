@@ -1,18 +1,34 @@
 # this lib contains NLP functions
 
 # lib
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import re
-import spacy
+
 from spacy.language import Language
 from spacy_langdetect import LanguageDetector
+from tqdm import tqdm
+
+import spacy
+# boost computations
+spacy.prefer_gpu()
+
+
+# initializing the nlp pipeline
+@Language.factory("language_detector")
+# define the function
+def get_lang_detector(nlp, name):
+    """
+    Proxy function for language detection.
+    """
+    return LanguageDetector()
+
+
+# load english
+nlp = spacy.load("en_core_web_sm")
+nlp.add_pipe('language_detector', last=True)
 
 
 # Sentiment analysis
-# Language detection using spacy¶
+# Language detection using spacy
 # More details here: https://spacy.io/universe/project/spacy-langdetect
 def clean(text):
     '''This function takes a string and cleans it from anything that is not a character also it lowers all characters.
@@ -20,39 +36,21 @@ def clean(text):
     :return: the cleaned text
     '''
     text = str(text).lower()
-    text = re.sub('[^a-z]', ' ', str(text))
+    text = re.sub("[^a-z]", ' ', str(text))
     return text
 
 
-@Language.factory("language_detector")
-# define the function
-def get_lang_detector(nlp, name):
-    '''This function finds the language of a given text
-    :param nlp: the language model
-    :param name: the class object
-    :return: the language of the text
-    '''
-    return LanguageDetector()
-
-
-def get_the_lenguages(df):
+def get_the_lenguages(df, col_name):
     """
     take the cleaned tweets and create an empty list, then loops through tweets and add language to the list
+    :param col_name: key to access the tweets in the dataframe
     :param df: dataframe we are working on
-    :return: the list of the lenguages in the twetter database
+    :return: the list of the languages in the twitter database
     """
-    tweets = df['cleantweet']
-    languages_spacy = []
+    # initialize tqdm
+    tqdm.pandas()
 
-    for e in tweets:
-        doc = nlp(e)
-        # cheking if the doc._.languages is not empty
-        # then appending the first detected language in a list
-        if doc._.language:
-            print(doc._.language['language'])
-            languages_spacy.append(doc._.language['language'])
-        else:
-            print("NaN")
-            languages_spacy.append('NaN')
+    df["Languages"] = df[col_name].progress_apply(lambda x: nlp(x)._.language)
+    df["Languages"].dropna(inplace=True)
 
-        return languages_spacy
+    return df
