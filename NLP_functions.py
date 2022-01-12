@@ -31,10 +31,11 @@ nlp.add_pipe('language_detector', last=True)
 # Language detection using spacy
 # More details here: https://spacy.io/universe/project/spacy-langdetect
 def clean(text):
-    '''This function takes a string and cleans it from anything that is not a character also it lowers all characters.
+    """
+    This function takes a string and cleans it from anything that is not a character also it lowers all characters.
     :param text: the string of text that should be cleaned
     :return: the cleaned text
-    '''
+    """
     text = str(text).lower()
     text = re.sub("[^a-z]", ' ', str(text))
     return text
