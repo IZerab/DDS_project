@@ -35,6 +35,7 @@ def drop_non_geolocalised(df, label_latitude, label_longitude):
 def localize_tweets(df, title, plot=False):
     """
     Function that creates a shapely like object to be use to gelocalize the single tweets using geopandas
+    :param plot: if true plots the data distribution over the world map
     :param df: Our dataframe with coordinates (lat and long). It plots te results on the world map!
     :param title: title of the plot
     :return: the geopandas dataframe with the geolocalized data!
