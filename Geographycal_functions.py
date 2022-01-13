@@ -75,7 +75,7 @@ def localize_USA(gdf, title, plot=False):
 
     if plot:
         # plot the world map
-        ax = world.plot(color='white', edgecolor='black')
+        ax = usa.plot(color='white', edgecolor='black')
         ax.set_title(title)
 
         # plot our points
@@ -85,4 +85,8 @@ def localize_USA(gdf, title, plot=False):
 
     print("The number of tweets available is: {} \n".format(gdf.shape[0]))
 
-    return gdf
+    # get a dataframe
+    df = pd.DataFrame(gdf)
+    print(type(df))
+
+    return df

@@ -5,7 +5,7 @@ import re
 
 from spacy.language import Language
 from spacy_langdetect import LanguageDetector
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 import spacy
 # boost computations
@@ -41,17 +41,16 @@ def clean(text):
     return text
 
 
-def get_the_lenguages(df, col_name):
+def get_the_lenguages(df):
     """
     take the cleaned tweets and create an empty list, then loops through tweets and add language to the list
-    :param col_name: key to access the tweets in the dataframe
+    NOTE: it only works for the 'clean_tweet' of the df. If it is not present it does not work!
     :param df: dataframe we are working on
     :return: the list of the languages in the twitter database
     """
     # initialize tqdm
-    tqdm.pandas()
-
-    df["Languages"] = df[col_name].progress_apply(lambda x: nlp(x)._.language)
+    tqdm.pandas(desc="Getting the languages: ")
+    df["Languages"] = df['clean_tweet'].progress_apply(lambda x: nlp(x)._.language)
     df["Languages"].dropna(inplace=True)
 
     return df

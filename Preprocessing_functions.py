@@ -3,14 +3,12 @@ from multiprocessing import Pool
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 # custom lib
 from NLP_functions import clean
 from NLP_functions import get_the_lenguages
 from sentiment_analysis import sentiment_analysis
-
-
 
 
 # this dataframe parellelize the worload on pandas operations over the dataframe, credits to
@@ -59,10 +57,10 @@ def safe_eliminate_NaN(df):
     return df
 
 
-def preprocessing(df):
+
+def text_preprocessing(df):
     """
     This function preprocesses the data for the 2020 USA election dataset.
-
     1) clean the text of the tweets
     2) creates a column in the dataframe with the languages of each tweet
     3) perform the sentiment analysis
@@ -70,20 +68,30 @@ def preprocessing(df):
     :param df:
     :return:
     """
-    # initialize tqdm
-    tqdm.pandas()
-
+    tqdm.pandas(desc="Clean the data: ")
     # PREPROCESSING
     # create the text mined features
     df['clean_tweet'] = df['tweet'].progress_apply(clean)
 
     # find the list of the leanguages the tweets where written in
-    df = get_the_lenguages(df, col_name='clean_tweet')
+    df = get_the_lenguages(df)
+
+    return df
+
+
+def text_mining(df):
+    # divide the data into states (via groupby) and get the state percentage of twitter english speakers!
+    en_df = df.groupby("STATE_NAME")[df["Languages"] == 'en'].count()
+    total_speakers_df = df.groupby("STATE_NAME")["Languages"].count()
+    for j in range(len(en_df)):
+        en_df.loc[j, "Languages"] = en_df.loc[j, "Languages"] / total_speakers_df.loc[j, "Languages"] * 100
+    # rename the column
+    en_df.rename(columns={"Languages": "%_english"}, inplace=True)
 
     # perform sentiment analysis
-    df = sentiment_analysis(df)
+    df = parallelize_dataframe(df, sentiment_analysis, n_cores=3)
 
     # get rid of the text (we don't need them)
     df.drop(columns='tweet', inplace=True)
 
-    return df
+    return df, en_df
