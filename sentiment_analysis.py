@@ -6,6 +6,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt  # Plotting library
 import seaborn as sns  # Plotting library with some statistical tools
 from textblob import TextBlob
+from tqdm.auto import tqdm
 
 biden_color = '#2986cc'
 trump_color = '#cc0000'
@@ -53,11 +54,12 @@ def sentiment_analysis(dataset):
      Input: The whole dataset to be subjected to sentiment analysis
      Output: Dataset with added features such as Polarity, Subjectivity and Overall Sentiment (positive/negative)
      """
+    tqdm.pandas(desc="Sentiment analysis")
     # Run sentiment analysis on tweets and add polarity and subjectivity features
-    dataset['TextBlob_Subjectivity'] = dataset['tweet'].apply(getSubjectivity)
-    dataset['TextBlob_Polarity'] = dataset['tweet'].apply(getPolarity)
+    dataset['TextBlob_Subjectivity'] = dataset['tweet'].progress_apply(getSubjectivity)
+    dataset['TextBlob_Polarity'] = dataset['tweet'].progress_apply(getPolarity)
     # Add feature to dataset
-    dataset['TextBlob_Analysis'] = dataset['TextBlob_Polarity'].apply(getAnalysis)
+    dataset['TextBlob_Analysis'] = dataset['TextBlob_Polarity'].progress_apply(getAnalysis)
     return dataset
 
 

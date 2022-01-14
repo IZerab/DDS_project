@@ -51,7 +51,7 @@ def get_the_lenguages(df, col_name):
     # initialize tqdm
     tqdm.pandas()
 
-    df["Languages"] = df[col_name].progress_apply(lambda x: nlp(x)._.language)
+    df["Languages"] = df[col_name].progress_apply(lambda x: nlp(x)._.language['language'])
     df["Languages"].dropna(inplace=True)
 
     return df
