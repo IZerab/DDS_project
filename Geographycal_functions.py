@@ -95,11 +95,11 @@ def assign_color(cluster_num):
     :return: a colour code
     """
     if cluster_num == 1:
-        return '#C62828'
-    elif cluster_num == 2:
-        return '#C62828'
-    elif cluster_num == 3:
-        return '#283593'
+        return 'lightsteelblue'
+    if cluster_num == 2:
+        return 'mediumblue'
+    if cluster_num == 3:
+        return 'cornflowerblue'
 
 
 def plot_clustering_results(gdf):
@@ -109,4 +109,4 @@ def plot_clustering_results(gdf):
     """
     gdf["Colour"] = gdf['cluster_id'].apply(assign_color)
     # adding a column with color names (gdf has 5 rows)
-    gdf.plot(color=gdf['Colour'])
+    gdf.plot(color=gdf['Colour'], figsize=(10, 15))
