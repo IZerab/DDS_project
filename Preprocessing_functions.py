@@ -107,6 +107,39 @@ def text_mining(df):
     df = parallelize_dataframe(df, sentiment_analysis, n_cores=3)
 
     # get rid of the text (we don't need them)
-    df.drop(columns='tweet', inplace=True)
+    df.drop(columns=['tweet', 'clean_tweets'], inplace=True)
 
     return df, share_df
+
+
+def select_dates_tweets(df):
+    """
+    This function only works on the kaggle Twitter 2020 US dataset.
+    It selects the dates before the last public debate, before the elections and after the election day.
+    :param df: in our code it is the dataset after the sentiment analysis, in general it can also be applied to the
+                starting kaggle dataset
+    """
+    # create a copy!
+    df = df.copy()
+
+    # create a slice of our df
+    timestamps = df["created_at"]
+
+    # decostruct the time variable
+    df["month"] = [int(st[5:7]) for st in timestamps]
+    df["day"] = [int(st[8:10]) for st in timestamps]
+
+    # the data are only present in October and November
+    # last debate
+    df_last_debate = df.loc[(df['month'] == 10) & (df['day'] <= 22)].copy()
+
+    # day after election day
+    df_election_day = df.loc[((df['month'] == 11) & (df['day'] <= 3)) | (df['month'] == 10)].copy()
+
+    # drop the month and day informations since they are integers and we do not need them in the next part!
+    df.drop(columns=["month", "day"], inplace=True)
+    df_last_debate.drop(columns=["month", "day"], inplace=True)
+    df_election_day.drop(columns=["month", "day"], inplace=True)
+
+    return df_last_debate, df_election_day, df
+

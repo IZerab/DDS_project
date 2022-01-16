@@ -86,3 +86,27 @@ def localize_USA(gdf, title, plot=False):
     print("The number of tweets available is: {} \n".format(gdf.shape[0]))
 
     return gdf
+
+
+def assign_color(cluster_num):
+    """
+    This fucntion assigns the colours to the given elements of a clustering
+    :param cluster_num: number used to identify the belongings to a particular cluster
+    :return: a colour code
+    """
+    if cluster_num == 1:
+        return '#C62828'
+    elif cluster_num == 2:
+        return '#C62828'
+    elif cluster_num == 3:
+        return '#283593'
+
+
+def plot_clustering_results(gdf):
+    """
+    This function plots the clustering results onto the USA map
+    :param gdf: geopandas dataframe which includes a column "cluster_id" representing the clustering
+    """
+    gdf["Colour"] = gdf['cluster_id'].apply(assign_color)
+    # adding a column with color names (gdf has 5 rows)
+    gdf.plot(color=gdf['Colour'])
