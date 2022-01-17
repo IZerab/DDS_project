@@ -107,7 +107,7 @@ def text_mining(df):
     df = parallelize_dataframe(df, sentiment_analysis, n_cores=3)
 
     # get rid of the text (we don't need them)
-    df.drop(columns=['tweet', 'clean_tweets'], inplace=True)
+    df.drop(columns=['tweet', 'clean_tweet'], inplace=True)
 
     return df, share_df
 

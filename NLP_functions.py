@@ -41,7 +41,7 @@ def clean(text):
     return text
 
 
-def get_the_lenguages(df, col_name="clean_tweets"):
+def get_the_lenguages(df, col_name="clean_tweet"):
     """
     take the cleaned tweets and create an empty list, then loops through tweets and add language to the list
     :param col_name: key to access the tweets in the dataframe
